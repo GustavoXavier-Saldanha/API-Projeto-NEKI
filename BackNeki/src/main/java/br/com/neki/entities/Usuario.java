@@ -1,5 +1,6 @@
 package br.com.neki.entities;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,8 +14,16 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-public class Usuario {
+public class Usuario implements UserDetails  {
+
+
+	private static final long serialVersionUID = -3452951328938981474L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +41,7 @@ public class Usuario {
 	
 	@NotNull
 	@NotBlank
-	@Column(length = 255)
-	@Size(min = 8, max = 16)
+	@Size(min = 8)
 	private String senha;
 	
 	@OneToMany(cascade = CascadeType.ALL)
@@ -71,4 +79,53 @@ public class Usuario {
 		this.habilidades = habilidades;
 	}
 
+	@Override
+	@JsonIgnore
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+		
+	}
+
+	@Override
+	@JsonIgnore
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return senha;
+	}
+
+	@Override
+	@JsonIgnore
+	public String getUsername() {
+		// TODO Auto-generated method stub	
+		return email;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

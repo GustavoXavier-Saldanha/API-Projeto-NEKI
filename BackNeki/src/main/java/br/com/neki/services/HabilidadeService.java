@@ -49,7 +49,7 @@ public class HabilidadeService {
 	}
 	
 	
-	public List<Habilidade> findAllHabilidadesUnusedByUsuario(UsuarioGeralDTO dto) throws HabilidadeException {
+	public List<Habilidade> findAllHabilidadesNaoRelacionadasByUsuario(UsuarioGeralDTO dto) throws HabilidadeException {
 		if (dto.getId() == null) {
 			throw new HabilidadeException("Usuario não existe");
 		}

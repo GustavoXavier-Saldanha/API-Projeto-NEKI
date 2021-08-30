@@ -18,7 +18,7 @@ public class HabilidadesUsuario {
 	private Habilidade habilidades;
 	
 	@NotNull
-	private Double nota;
+	private Integer  nota;
 
 	
 	public Long getId() {
@@ -33,10 +33,10 @@ public class HabilidadesUsuario {
 	public void setHabilidades(Habilidade habilidades) {
 		this.habilidades = habilidades;
 	}
-	public Double getNota() {
+	public Integer  getNota() {
 		return nota;
 	}
-	public void setNota(Double nota) {
+	public void setNota(Integer  nota) {
 		this.nota = nota;
 	}
 	

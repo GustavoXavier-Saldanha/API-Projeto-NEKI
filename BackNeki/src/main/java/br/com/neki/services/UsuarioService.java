@@ -1,22 +1,30 @@
 package br.com.neki.services;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.neki.entities.Habilidade;
 import br.com.neki.entities.HabilidadesUsuario;
 import br.com.neki.entities.Usuario;
 import br.com.neki.entities.dtos.HabilidadeUsuarioDTO;
+import br.com.neki.entities.dtos.LoginRespostaDTO;
 import br.com.neki.entities.dtos.UsuarioGeralDTO;
+import br.com.neki.exception.EmailOrPasswordNotValidException;
 import br.com.neki.exception.UsuarioException;
 import br.com.neki.mappers.HabilidadeUsuarioMapper;
 import br.com.neki.mappers.UsuarioMapper;
 import br.com.neki.repositories.HabilidadesUsuarioRepository;
 import br.com.neki.repositories.UsuarioRepository;
+import br.com.neki.security.JWTService;
 
 @Service
 public class UsuarioService {
@@ -40,6 +48,12 @@ public class UsuarioService {
 	
 	@Autowired
 	HabilidadeService habilidadeService;
+	
+	@Autowired
+	JWTService jwtService;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
 	
 	public Usuario findById(Long id) throws EntityNotFoundException {
 		return usuarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id + " não encontrado."));
@@ -67,13 +81,13 @@ public class UsuarioService {
 
 	}	
 
-	public Usuario addSkill(Long idHabilidade, UsuarioGeralDTO dto) throws UsuarioException {
-		if(dto.getId() == null || idHabilidade == null) {
+	public Usuario addSkill(Long idSkill, UsuarioGeralDTO dto) throws UsuarioException {
+		if(dto.getId() == null || idSkill == null) {
 			throw new UsuarioException("Algum dos campos não foi preenchido");
 		}
 		
 		Usuario usuario = findById(dto.getId());
-		Habilidade habilidade = habilidadeService.findById(idHabilidade);
+		Habilidade habilidade = habilidadeService.findById(idSkill);
 		
 		
 		List<HabilidadesUsuario> habilidades = usuario.getHabilidades();
@@ -94,27 +108,27 @@ public class UsuarioService {
 
 	
 
-	public HabilidadesUsuario editSkill(HabilidadeUsuarioDTO dto, Double nota ) throws UsuarioException {
-		if(dto.getId() == null || nota == null) {
-			throw new UsuarioException("id habilidade e/ou id usuario são nulos");
+	public HabilidadesUsuario editSkill(HabilidadeUsuarioDTO dto, Long idUsuario ) throws UsuarioException {
+		if(dto.getId() == null || idUsuario  == null) {
+			throw new UsuarioException("É necessário preencher todos os campos");
 		}
 		
 		HabilidadesUsuario habilidade = habilidadesUsuarioService.findById(dto.getId());
 		
-		habilidade.setNota(nota);
+		habilidade.setNota(dto.getNota());
 		
 		return habilidadesUsuarioRepository.save(habilidade);
 	}
 	
 	
 	
-	public Usuario deleteSkill(UsuarioGeralDTO dto, Long id ) throws UsuarioException {
-		if(dto.getId() == null || id == null) {
+	public Usuario deleteSkill(UsuarioGeralDTO dto, Long idSkill ) throws UsuarioException {
+		if(dto.getId() == null || idSkill == null) {
 			throw new UsuarioException("id habilidade e/ou id usuario são nulos");
 		}
 		
 		Usuario usuario = findById(dto.getId());
-		HabilidadesUsuario habilidade = habilidadesUsuarioService.findById(id);
+		HabilidadesUsuario habilidade = habilidadesUsuarioService.findById(idSkill);
 		
 		List<HabilidadesUsuario> habilidades = usuario.getHabilidades();
 		
@@ -125,5 +139,21 @@ public class UsuarioService {
 		usuario.setHabilidades(habilidades);
 		
 		return usuarioRepository.save(usuario);
+	}
+	
+	
+	
+	public LoginRespostaDTO logar(String email, String senha) throws EmailOrPasswordNotValidException {
+		
+		Authentication autenticacao = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(email, senha, Collections.emptyList()));
+
+		SecurityContextHolder.getContext().setAuthentication(autenticacao);
+
+		String token = headerPrefix + jwtService.gerarToken(autenticacao);
+
+		var usuario = usuarioRepository.findByEmail(email);
+		
+		return new LoginRespostaDTO(token, usuario.get());
 	}
 }

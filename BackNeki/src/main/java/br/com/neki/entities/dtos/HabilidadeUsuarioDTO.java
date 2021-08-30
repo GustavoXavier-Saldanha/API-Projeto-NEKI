@@ -6,7 +6,7 @@ public class HabilidadeUsuarioDTO {
 
 	private Long id;
 	private Habilidade habilidade;
-	private Double nota;
+	private Integer nota;
 	
 	
 	public Long getId() {
@@ -21,10 +21,10 @@ public class HabilidadeUsuarioDTO {
 	public void setHabilidade(Habilidade habilidade) {
 		this.habilidade = habilidade;
 	}
-	public Double getNota() {
+	public Integer  getNota() {
 		return nota;
 	}
-	public void setNota(Double nota) {
+	public void setNota(Integer  nota) {
 		this.nota = nota;
 	}
 

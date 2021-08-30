@@ -1,8 +1,10 @@
 package br.com.neki.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import br.com.neki.exception.UsuarioException;
 import br.com.neki.services.HabilidadeService;
 import br.com.neki.services.UsuarioService;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
@@ -48,7 +51,7 @@ public class UsuarioController {
 		}
 	}
 	
-	@PostMapping("/adiciona/{idHabilidade}")
+	@PostMapping("/adiciona/{idSkill}")
 	public ResponseEntity<?> addSkill(@PathVariable Long idSkill,@RequestBody UsuarioGeralDTO dto) {
 		try {
 			return new ResponseEntity<>(usuarioService.addSkill(idSkill, dto), HttpStatus.OK);
@@ -58,10 +61,10 @@ public class UsuarioController {
 
 	}
 	
-	@PutMapping("/editar/habilidade/{nivel}")
-	public ResponseEntity<?> editSkill(@PathVariable Double nota ,@RequestBody HabilidadeUsuarioDTO dto) {
+	@PutMapping("/editar/habilidade/{idUsuario}")
+	public ResponseEntity<?> editSkill(@PathVariable Long idUsuario ,@RequestBody HabilidadeUsuarioDTO dto) {
 		try {
-			return new ResponseEntity<>(usuarioService.editSkill(dto, nota), HttpStatus.OK);
+			return new ResponseEntity<>(usuarioService.editSkill(dto, idUsuario), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
@@ -69,7 +72,7 @@ public class UsuarioController {
 	}
 	
 
-	@PostMapping("/remove/{idHabilidade}")
+	@PostMapping("/remove/{idSkill}")
 	public ResponseEntity<?> deleteSkill(@RequestBody UsuarioGeralDTO dto,@PathVariable Long idSkill) {
 		try {
 			return new ResponseEntity<>(usuarioService.deleteSkill(dto, idSkill), HttpStatus.OK);

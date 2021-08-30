@@ -1,9 +1,12 @@
 package br.com.neki.mappers;
 
 
+import org.springframework.stereotype.Component;
+
 import br.com.neki.entities.Habilidade;
 import br.com.neki.entities.dtos.HabilidadeCadastroDTO;
 
+@Component
 public class HabilidadeMapper {
 
 	
