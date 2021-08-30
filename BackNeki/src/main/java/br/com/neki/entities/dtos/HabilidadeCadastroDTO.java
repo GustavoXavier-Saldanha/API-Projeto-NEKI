@@ -1,24 +1,22 @@
 package br.com.neki.entities.dtos;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 public class HabilidadeCadastroDTO {
-
 	
-	@NotNull
-	@NotBlank
+	private Long id;
+	
 	private String nome;
 	
-	@NotNull
-	@NotBlank
 	private String descricao;
 	
-	@NotNull
-	@NotBlank
 	private String url;
 
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getNome() {
 		return nome;
 	}

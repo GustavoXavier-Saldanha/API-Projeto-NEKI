@@ -1,27 +1,20 @@
 package br.com.neki.entities.dtos;
 
-import javax.persistence.Column;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import java.util.List;
 
-public class UsuarioCadastroDTO {
+import br.com.neki.entities.HabilidadesUsuario;
+
+public class UsuarioGeralDTO {
 	
-	@NotEmpty
-	@Column(length = 80)
-	@Size(min = 5, max = 80)
+	private Long Id;
+	
 	private String nome;
 
-	@NotEmpty
-	@Email
-	@Column(unique = true, length = 64)
 	private String email;
 
-	@NotEmpty
-	@Column(length = 255)
-	@Size(min = 8, max = 255)
 	private String senha;
 
+	private List<HabilidadesUsuario> habilidades;
 	
 	public String getNome() {
 		return nome;
@@ -40,6 +33,18 @@ public class UsuarioCadastroDTO {
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	public List<HabilidadesUsuario> getHabilidades() {
+		return habilidades;
+	}
+	public void setHabilidades(List<HabilidadesUsuario> habilidades) {
+		this.habilidades = habilidades;
+	}
+	public Long getId() {
+		return Id;
+	}
+	public void setId(Long id) {
+		Id = id;
 	}
 	
 	

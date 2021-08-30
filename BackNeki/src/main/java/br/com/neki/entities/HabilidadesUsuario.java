@@ -1,15 +1,11 @@
 package br.com.neki.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class HabilidadesUsuario {
@@ -18,13 +14,12 @@ public class HabilidadesUsuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToMany(mappedBy = "HabilidadesRelacionadas", cascade = CascadeType.ALL)
-	private List<HabilidadesRelacionadas> habilidades = new ArrayList<>();
-	
 	@ManyToOne
-	private Usuario usuario;
-
+	private Habilidade habilidades;
 	
+	@NotNull
+	private Double nota;
+
 	
 	public Long getId() {
 		return id;
@@ -32,20 +27,17 @@ public class HabilidadesUsuario {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public List<HabilidadesRelacionadas> getHabilidades() {
+	public Habilidade getHabilidades() {
 		return habilidades;
 	}
-	public void setHabilidades(List<HabilidadesRelacionadas> habilidades) {
+	public void setHabilidades(Habilidade habilidades) {
 		this.habilidades = habilidades;
 	}
-	public Usuario getUsuario() {
-		return usuario;
+	public Double getNota() {
+		return nota;
 	}
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setNota(Double nota) {
+		this.nota = nota;
 	}
-	
-	
 	
 }

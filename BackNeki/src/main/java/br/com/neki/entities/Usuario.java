@@ -1,10 +1,14 @@
 package br.com.neki.entities;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,8 +35,9 @@ public class Usuario {
 	@Column(length = 255)
 	@Size(min = 8, max = 16)
 	private String senha;
-
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<HabilidadesUsuario> habilidades;
 	
 	
 	public Long getId() {
@@ -58,5 +63,12 @@ public class Usuario {
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}	
+	}
+	public List<HabilidadesUsuario> getHabilidades() {
+		return habilidades;
+	}
+	public void setHabilidades(List<HabilidadesUsuario> habilidades) {
+		this.habilidades = habilidades;
+	}
+
 }
