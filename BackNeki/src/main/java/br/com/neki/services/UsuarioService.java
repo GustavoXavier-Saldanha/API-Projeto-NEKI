@@ -122,23 +122,16 @@ public class UsuarioService {
 	
 	
 	
-	public Usuario deleteSkill(UsuarioGeralDTO dto, Long idSkill ) throws UsuarioException {
-		if(dto.getId() == null || idSkill == null) {
-			throw new UsuarioException("id habilidade e/ou id usuario são nulos");
+	public String deleteSkill( Long idSkill ) throws UsuarioException {
+		if(idSkill == null) {
+			throw new UsuarioException("id habilidade não existe");
 		}
-		
-		Usuario usuario = findById(dto.getId());
+	
 		HabilidadesUsuario habilidade = habilidadesUsuarioService.findById(idSkill);
 		
-		List<HabilidadesUsuario> habilidades = usuario.getHabilidades();
+		habilidadesUsuarioRepository.delete(habilidade);
 		
-		if(!habilidades.contains(habilidade)) {
-			throw new UsuarioException("Habilidade não encontrada");
-		}
-		habilidades.remove(habilidade);
-		usuario.setHabilidades(habilidades);
-		
-		return usuarioRepository.save(usuario);
+		return "Removido";
 	}
 	
 	

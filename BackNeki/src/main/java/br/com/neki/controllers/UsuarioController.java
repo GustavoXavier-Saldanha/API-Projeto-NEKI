@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,7 +56,7 @@ public class UsuarioController {
 		}
 	}
 	
-	@ApiOperation(value = "Relaciona o usuario a skill")
+	@ApiOperation(value = "Relaciona a skill ao usuario")
 	@PostMapping("/adiciona/{idSkill}")
 	public ResponseEntity<?> addSkill(@PathVariable Long idSkill,@RequestBody UsuarioGeralDTO dto) {
 		try {
@@ -78,10 +79,10 @@ public class UsuarioController {
 	}
 	
 	@ApiOperation(value = "Desrelaciona o usuario com a skill")
-	@PostMapping("/remove/{idSkill}")
-	public ResponseEntity<?> deleteSkill(@RequestBody UsuarioGeralDTO dto,@PathVariable Long idSkill) {
+	@DeleteMapping("/remove/{idSkill}")
+	public ResponseEntity<?> deleteSkill(@PathVariable Long idSkill) {
 		try {
-			return new ResponseEntity<>(usuarioService.deleteSkill(dto, idSkill), HttpStatus.OK);
+			return new ResponseEntity<>(usuarioService.deleteSkill(idSkill), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

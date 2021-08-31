@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.neki.entities.Habilidade;
@@ -82,4 +83,16 @@ public class HabilidadeService {
 		return habilidadeRepository.save(entity);
 
 	}
+	
+	public HabilidadeCadastroDTO update(Long id, HabilidadeCadastroDTO dto) throws EntityNotFoundException {
+		Habilidade habilidade = this.findById(id);
+		habilidade.setNome(dto.getNome());
+		habilidade.setDescricao(dto.getDescricao());
+		habilidade.setUrl(dto.getUrl());
+		
+		return habilidadeMapper.toDTO(habilidadeRepository.save(habilidade));
+
+	}
+	
+	
 }

@@ -1,13 +1,14 @@
 package br.com.neki.entities.dtos;
 
 import br.com.neki.entities.Habilidade;
+import br.com.neki.entities.Usuario;
 
 public class HabilidadeUsuarioDTO {
 
 	private Long id;
 	private Habilidade habilidade;
 	private Integer nota;
-	
+	private Usuario usuario;
 	
 	public Long getId() {
 		return id;
@@ -26,6 +27,12 @@ public class HabilidadeUsuarioDTO {
 	}
 	public void setNota(Integer  nota) {
 		this.nota = nota;
+	}
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	
