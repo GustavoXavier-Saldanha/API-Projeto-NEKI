@@ -17,8 +17,11 @@ import br.com.neki.entities.dtos.UsuarioGeralDTO;
 import br.com.neki.exception.HabilidadeException;
 import br.com.neki.services.HabilidadeService;
 import br.com.neki.services.UsuarioService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin("*")
+@Api("API - Skills ")
 @RestController
 @RequestMapping("/habilidade")
 public class HabilidadeController {
@@ -29,6 +32,7 @@ public class HabilidadeController {
 	@Autowired
 	HabilidadeService habilidadeService;
 	
+	@ApiOperation(value = "Cadastro de habilidades")
 	@PostMapping("/cadastro")
 	public ResponseEntity<?> postHabilidade(@RequestBody HabilidadeCadastroDTO dto) {
 		try {
@@ -39,18 +43,18 @@ public class HabilidadeController {
 
 	}
 	
-	
-	@PostMapping("/usuario")
-	public ResponseEntity<?> findAllHabilidadesByUsuario(@RequestBody UsuarioGeralDTO dto) {
+	@ApiOperation(value = "Pesquisa de habilidades relacionadas ao usuario")
+	@GetMapping("/usuario/{idHabilidade}")
+	public ResponseEntity<?> findAllHabilidadesByUsuario(@PathVariable Long idHabilidade) {
 		try {
-			return new ResponseEntity<>(habilidadeService.findAllHabilidadesByUsuario(dto), HttpStatus.CREATED);
+			return new ResponseEntity<>(habilidadeService.findAllHabilidadesByUsuario(idHabilidade), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 
 	}
 	
-	
+	@ApiOperation(value = "Pesquisa habilidades não relacionadas ao usuario")
 	@PostMapping("/naorelacionadas")
 	public ResponseEntity<?> findAllHabilidadesNaoRelacionadasByUsuario(@RequestBody UsuarioGeralDTO dto) {
 		try {
@@ -61,7 +65,7 @@ public class HabilidadeController {
 
 	}
 	
-	
+	@ApiOperation(value = "Pesquisa habilidade por id")
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findById(@PathVariable Long id)
 			throws HabilidadeException {

@@ -1,7 +1,6 @@
 package br.com.neki.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,8 +18,11 @@ import br.com.neki.entities.dtos.UsuarioGeralDTO;
 import br.com.neki.exception.UsuarioException;
 import br.com.neki.services.HabilidadeService;
 import br.com.neki.services.UsuarioService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin("*")
+@Api("API - Operações de Usuarios")
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
@@ -31,6 +33,7 @@ public class UsuarioController {
 	@Autowired
 	HabilidadeService habilidadeService;
 	
+	@ApiOperation(value = "Cadastro de Usuario")
 	@PostMapping("/cadastrar")
 	public ResponseEntity<?> postUsuario(@RequestBody UsuarioGeralDTO dto) {
 		try {
@@ -40,6 +43,7 @@ public class UsuarioController {
 		}
 	}
 	
+	@ApiOperation(value = "Pesquisa de usuario por id")
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findById(@PathVariable Long id)
 			throws UsuarioException {
@@ -51,6 +55,7 @@ public class UsuarioController {
 		}
 	}
 	
+	@ApiOperation(value = "Relaciona o usuario a skill")
 	@PostMapping("/adiciona/{idSkill}")
 	public ResponseEntity<?> addSkill(@PathVariable Long idSkill,@RequestBody UsuarioGeralDTO dto) {
 		try {
@@ -61,6 +66,7 @@ public class UsuarioController {
 
 	}
 	
+	@ApiOperation(value = "Edita a relação de usuario com a skill")
 	@PutMapping("/editar/habilidade/{idUsuario}")
 	public ResponseEntity<?> editSkill(@PathVariable Long idUsuario ,@RequestBody HabilidadeUsuarioDTO dto) {
 		try {
@@ -71,7 +77,7 @@ public class UsuarioController {
 
 	}
 	
-
+	@ApiOperation(value = "Desrelaciona o usuario com a skill")
 	@PostMapping("/remove/{idSkill}")
 	public ResponseEntity<?> deleteSkill(@RequestBody UsuarioGeralDTO dto,@PathVariable Long idSkill) {
 		try {

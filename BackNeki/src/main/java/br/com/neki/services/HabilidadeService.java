@@ -38,11 +38,11 @@ public class HabilidadeService {
 	}
 	
 	
-	public List<HabilidadesUsuario> findAllHabilidadesByUsuario(UsuarioGeralDTO dto) throws HabilidadeException {
-		if (dto.getId() == null) {
+	public List<HabilidadesUsuario> findAllHabilidadesByUsuario(Long idUsuario) throws HabilidadeException {
+		if (idUsuario == null) {
 			throw new HabilidadeException("Usuario nulo");
 		}
-		Usuario usuario = usuarioService.findById(dto.getId());
+		Usuario usuario = usuarioService.findById(idUsuario);
 		List<HabilidadesUsuario> habilidades = (usuario.getHabilidades());
 		
 		return habilidades;
